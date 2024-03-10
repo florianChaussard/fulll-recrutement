@@ -1,65 +1,36 @@
-# Join fulll
+Fulll - Hiring process answers
+======
 
-Space dedicated to the hiring process at [Fulll](https://www.fulll.fr). 
-If you're looking for a specific job offer, check our current list of [opened positions](https://www.welcometothejungle.com/fr/companies/fulll).
+This repository is meant to be Florian Chaussard's answers to [Fulll](https://fulll.fr) hiring process.
+I developped my answers to folders Algo and Backend using PHP 8.3. I wish i could have used Symfony 6.4 for it would have made things way faster and easier but the rules were clear : no framework
 
-Could not find the perfect match? Feel free to reach us and provide your resume, motivation and the role you would expect directly by mail at rh@fulll.fr
+PHP libraries manager : Composer 
 
+JS libraries manager : Yarn
 
-# How are we structured?
+# Installation
+* vendors
 
-- **Squads**: focused on building the product.
-- **Chapters**: focused on sharing expertise.
-- **Guilds**: focused on temporary/transverse topics.
+For the project to run correctly after the first download, you need to run commands ``composer install`` in /Backend/PHP/Boilerplate dir and ``yarn install`` in Backend/Node/Boilerplate dir
 
-Example of **Squads** (collection of apps with same affinity):
+* database
 
-- Data
-- Workflow 
-- Accounting
-- ...
+# FizzBuzz
+My answer for the demand detailled in [FizzBuzz.md](fizzbuzz.md) is located in [/Algo/FizzBuzzCommand.php](FizzBuzzCommand.php)
 
-Example of **Chapters**:
+To play it, you can open a command line and run ``php ./Algo/FizzBuzzCommand.php`` if you're located in the project root dir.
 
-- chapter back-end
-- chapter front-end
-- chapter QA
-- chapter design
-- ...
+I added 2 parameters options : 
 
-Example of **Guilds**:
+* if you add "help" after the command ``php ./Algo/FizzBuzzCommand.php`` the command will display informations about what FizzBuzz is
+* if you add a number >= 1 as in ``php ./Algo/FizzBuzzCommand.php 8.96`` the command will consider the number 8.96 as the max value the user wants to browse to. It will only consider the integer part (8.96 => 8) and thus run FizzBuzz from 1 to 8
+* Of course you can add both arguments in the same time
 
-- Github Actions v2
-- Distributed credentials
-- XLS as a service
-- ...
-
-# Recruitment process
-
-The goal is to detect which chapter.s fits to you, how you can help us whilst improving your skills in our organization.
-
-:bulb: As a follow up, **each quarter** we make evaluations to help you quantify your progress.
-
-## How do you proceed with hiring process?
-
-1. First of all, you apply to a specific job or a spontaneous application by providing you resume, motivation and any link that could help us to know you more (github, portfolio, linkedin...)
-2. First interview with our HR to understand your wishes
-3. Technical tests / uses case to work on your side
-4. Second interview with a pair and a manager
+You can chose not to add a max value directly when running the command, in that case the command will prompt the user for this information
 
 
+# Fleet management
+//todo
 
-### 3. Technical tests
-
-You will have to pass some technical test among following ones:
-
-#### Developers
-- [Algo](./Algo)
-- [Backend](./Backend)
-- [Frontend](./Frontend)
-- [Mobile](./Mobile)
-- [Python](./Python)
-- [Data Science](./DataScience)
-
-#### Product manager
-- [Product manager](./ProductManager)
+# Code quality tools
+//todo
