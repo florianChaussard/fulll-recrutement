@@ -7,7 +7,7 @@ Class User{
     /** @var string $name User's name */
     private string $name;
 
-    public function __construct(string $name)
+    public function __construct(string $name = '')
     {
         $this->id = uniqid();
         $this->name = $name;
