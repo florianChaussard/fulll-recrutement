@@ -6,17 +6,26 @@ use Behat\Behat\Context\Context;
 use Fulll\App\Calculator;
 use Fulll\Domain\Fleet;
 use Fulll\Domain\Vehicle;
+use Fulll\Domain\Location;
 use Fulll\App\FleetManager;
+use Fulll\App\VehicleManager;
 
 class FeatureContext implements Context
 {
     /**
-     * Use $this->fleetManager when necessary instead of create a new instance in every function that needs it
+     * Use $this->fleetManager when necessary instead of creating a new instance in every function that needs it
      * @var FleetManager $fleetManager
      */
     private FleetManager $fleetManager;
+
+    /**
+     * Use $this->vehicleManager when necessary instead of creating a new instance in every function that needs it
+     * @var VehicleManager $vehicleManager
+     */
+    private VehicleManager $vehicleManager;
     public function __construct(){
         $this->fleetManager = new FleetManager();
+        $this->vehicleManager = new VehicleManager();
     }
 
     /**
@@ -131,4 +140,57 @@ class FeatureContext implements Context
             ));
         }
     }
+
+
+
+    /**
+     * ===================
+     * park_vehicle.feature
+     * ===================
+     */
+
+    /**
+     * @var Location $aLocation a place to park a vehicle
+     */
+    private Location $aLocation;
+
+    /**
+     * @Given a location
+     */
+    public function createNewLocation():Location{
+        $this->aLocation = new Location();
+        return $this->aLocation;
+    }
+
+    /**
+     * @Given my vehicle has been parked into this location
+     * @When I park my vehicle at this location
+     * @When I try to park my vehicle at this location
+     */
+    public function parkVehicleToLocation():void
+    {
+        if(!$this->aVehicle->setLocation($this->aLocation)){
+            throw new RuntimeException(sprintf('The vehicle with id %s is already parked at location with id %s (location name : %s)',
+                $this->aVehicle->getId(),
+                $this->aLocation->getId(), $this->aLocation->getName()));
+        }
+    }
+
+    /**
+     * @Then the known location of my vehicle should verify this location
+     * @Then I should be informed that my vehicle is already parked at this location
+     */
+    public function checkIfVehicleIsAtLocation():void
+    {
+        if(!$this->vehicleManager->checkIfVehicleIsAtLocation($this->aVehicle, $this->aLocation)){
+            throw new \RuntimeException(sprintf('The vehicle with id %s should be at the location with id %s
+            (location name : %s), but is not.',
+                $this->aVehicle->getId(),
+                $this->aLocation->getId(),
+                $this->aLocation->getName()
+            ));
+        }
+    }
+
+
 }

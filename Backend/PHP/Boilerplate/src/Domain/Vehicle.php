@@ -10,11 +10,15 @@ Class Vehicle{
     /** @var array The list of fleets that the vehicle is in */
     private array $lstFleets;
 
+    /** @var Location $location the place where the vehicle is parked  */
+    private Location $location;
+
     public function __construct(string $type = '')
     {
         $this->id = uniqid();
         $this->type = $type;
         $this->lstFleets = [];
+        $this->location = new Location();
     }
 
     public function getId():string
@@ -55,6 +59,8 @@ Class Vehicle{
     }
 
     /**
+     * Removes the vehicle from a fleet if it is part of it
+     * Returns true if the vehicle was removed from the fleet, returns false if the vehicle was not part of the given fleet
      * @param Fleet $fleet
      * @return bool
      */
@@ -67,6 +73,26 @@ Class Vehicle{
         }
         //the vehicle is part of the fleet, we remove it
         unset($this->lstFleets[$key]);
+        return true;
+    }
+
+    public function getLocation():Location
+    {
+        return $this->location;
+    }
+
+    /**
+     * Parks a vehicle to a location if the vehicle is not already there
+     * Returns true if the location has been set, returns false if the vehicle was already at this location
+     * @param Location $location
+     * @return bool
+     */
+    public function setLocation(Location $location):bool
+    {
+        if($this->location->getId() === $location->getId()){
+            return false;
+        }
+        $this->location = $location;
         return true;
     }
 }
