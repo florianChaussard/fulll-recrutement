@@ -4,18 +4,26 @@ declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Fulll\App\Calculator;
-use Fulll\Infra\Fleet;
-use Fulll\Infra\User;
-use Fulll\Infra\Vehicle;
+use Fulll\Domain\Fleet;
+use Fulll\Domain\Vehicle;
+use Fulll\App\FleetManager;
 
 class FeatureContext implements Context
 {
-    private User $myUser;
-    private User $someoneElse;
-    private Fleet $myFleet;
-    private Fleet $someoneElseFleet;
-    private Vehicle $aVehicle;
+    /**
+     * Use $this->fleetManager when necessary instead of create a new instance in every function that needs it
+     * @var FleetManager $fleetManager
+     */
+    private FleetManager $fleetManager;
+    public function __construct(){
+        $this->fleetManager = new FleetManager();
+    }
 
+    /**
+     * ===================
+     * behat.feature
+     * ===================
+     */
     private bool $errorVehicleAlreadyAdded = false;
     /**
      * @When I multiply :a by :b into :var
@@ -36,34 +44,43 @@ class FeatureContext implements Context
         }
     }
 
+
+    /**
+     * ===================
+     * register_vehicule.feature
+     * ===================
+     */
+
+    /**
+     * @var Fleet $myFleet the fleet that belongs to me
+     */
+    private Fleet $myFleet;
+
+    /**
+     * @var Fleet $someoneElseFleet the fleet that belongs to someone else
+     */
+    private Fleet $someoneElseFleet;
+
+    /**
+     * @var Vehicle $aVehicle a vehicle
+     */
+    private Vehicle $aVehicle;
+
     /**
      * @Given my fleet
      */
-    public function getMyFleet():Fleet
+    public function createMyFleet():Fleet
     {
-        if(isset($this->myFleet)){
-            return $this->myFleet;
-        }
-        if(!isset($this->myUser)){
-            $this->myUser = new User('me');
-        }
-        $this->myFleet = new Fleet($this->myUser);
+        $this->myFleet = new Fleet('Florian');
         return $this->myFleet;
     }
 
     /**
      * @Given the fleet of another user
-     * @return Fleet
      */
-    public function getAnotherUsersFleet():Fleet
+    public function createSomeoneElseFleet():Fleet
     {
-        if(isset($this->someoneElseFleet)){
-            return $this->someoneElseFleet;
-        }
-        if(!isset($this->someoneElse)){
-            $this->someoneElse = new User('Someone Else');
-        }
-        $this->someoneElseFleet = new Fleet($this->someoneElse);
+        $this->someoneElseFleet = new Fleet('Someone Else');
         return $this->someoneElseFleet;
     }
 
@@ -81,44 +98,37 @@ class FeatureContext implements Context
      * @When I register this vehicle into my fleet
      * @When I try to register this vehicle into my fleet
      */
-    public function registerVehicleToMyFleet():bool
+    public function registerAVehicleToMyFleet():void
     {
-        if(!$this->myFleet->addVehicleToFleet($this->aVehicle)){
-            $this->errorVehicleAlreadyAdded = true;
-            return false;
+        if(!$this->fleetManager->associateFleetAndVehicle($this->aVehicle, $this->myFleet)){
+            throw new RuntimeException(sprintf('The vehicle with id %s is already part of the fleet with id %s (fleet owner : %s)',
+                $this->aVehicle->getId(), $this->myFleet->getId(), $this->myFleet->getUsername()));
         }
-        return true;
     }
 
     /**
      * @Given this vehicle has been registered into the other user's fleet
-     * @return bool
      */
-    public function registerVehicleToSomeoneElseFleet():bool
+    public function registerVehicleToSomeoneElseFleet():void
     {
-        if(!$this->someoneElseFleet->addVehicleToFleet($this->aVehicle)){
-            $this->errorVehicleAlreadyAdded = true;
-            return false;
+        if(!$this->fleetManager->associateFleetAndVehicle($this->aVehicle, $this->someoneElseFleet)){
+            throw new RuntimeException(sprintf('The vehicle with id %s is already part of the fleet with id %s (fleet owner : %s)',
+                $this->aVehicle->getId(), $this->someoneElseFleet->getId(), $this->someoneElseFleet->getUsername()));
         }
-        return true;
     }
 
     /**
      * @Then this vehicle should be part of my vehicle fleet
-     */
-    public function checkIfVehicleBelongsToMyFleet():void{
-        if(!$this->myFleet->checkIfVehicleIsPartOfFleet($this->aVehicle)){
-            throw new \RuntimeException(sprintf('The vehicle %s should be part of the fleet that belongs to %s, but is not.', $this->aVehicle->getType(), $this->myFleet->getUser()->getName()));
-        }
-    }
-
-    /**
      * @Then I should be informed that this vehicle has already been registered into my fleet
      */
-    public function checkIfErrorVehicleAlreadyAddedToFleetIsTrue()
-    {
-        if(!$this->errorVehicleAlreadyAdded){
-            throw new \RuntimeException('I tried to add the same vehicle to a fleet twice and no error was thrown');
+    public function checkIfAVehicleBelongsToMyFleet():void{
+        if(!$this->fleetManager->checkIfVehicleIsPartOfFleet($this->aVehicle, $this->myFleet)){
+            throw new \RuntimeException(sprintf('The vehicle with id %s should be part of the fleet with id %s
+            (fleet owner : %s), but is not.',
+                $this->aVehicle->getId(),
+                $this->myFleet->getId(),
+                $this->myFleet->getUsername()
+            ));
         }
     }
 }
