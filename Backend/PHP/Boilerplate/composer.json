@@ -2,9 +2,9 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "behat/behat": "*"
-    },
-    "require-dev": {
+        "behat/behat": "*",
+        "doctrine/orm": "^3.1",
+        "minicli/minicli": "^4.2"
     },
     "config": {
         "preferred-install": {
