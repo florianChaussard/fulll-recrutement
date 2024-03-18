@@ -3,29 +3,29 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
-use Fulll\App\Calculator;
-use Fulll\Domain\Fleet;
-use Fulll\Domain\Vehicle;
-use Fulll\Domain\Location;
-use Fulll\App\FleetManager;
-use Fulll\App\VehicleManager;
+use App\App\Calculator;
+use App\Domain\Fleet;
+use App\Domain\Vehicle;
+use App\Domain\Location;
+use App\App\FleetHelper;
+use App\App\VehicleHelper;
 
 class FeatureContext implements Context
 {
     /**
-     * Use $this->fleetManager when necessary instead of creating a new instance in every function that needs it
-     * @var FleetManager $fleetManager
+     * Use $this->fleetHelper when necessary instead of creating a new instance in every function that needs it
+     * @var FleetHelper $fleetHelper
      */
-    private FleetManager $fleetManager;
+    private FleetHelper $fleetHelper;
 
     /**
      * Use $this->vehicleManager when necessary instead of creating a new instance in every function that needs it
-     * @var VehicleManager $vehicleManager
+     * @var VehicleHelper $vehicleManager
      */
-    private VehicleManager $vehicleManager;
+    private VehicleHelper $vehicleManager;
     public function __construct(){
-        $this->fleetManager = new FleetManager();
-        $this->vehicleManager = new VehicleManager();
+        $this->fleetHelper = new FleetHelper();
+        $this->vehicleManager = new VehicleHelper();
     }
 
     /**
@@ -109,7 +109,7 @@ class FeatureContext implements Context
      */
     public function registerAVehicleToMyFleet():void
     {
-        if(!$this->fleetManager->associateFleetAndVehicle($this->aVehicle, $this->myFleet)){
+        if(!$this->fleetHelper->associateFleetAndVehicle($this->aVehicle, $this->myFleet)){
             throw new RuntimeException(sprintf('The vehicle with id %s is already part of the fleet with id %s (fleet owner : %s)',
                 $this->aVehicle->getId(), $this->myFleet->getId(), $this->myFleet->getUsername()));
         }
@@ -120,7 +120,7 @@ class FeatureContext implements Context
      */
     public function registerVehicleToSomeoneElseFleet():void
     {
-        if(!$this->fleetManager->associateFleetAndVehicle($this->aVehicle, $this->someoneElseFleet)){
+        if(!$this->fleetHelper->associateFleetAndVehicle($this->aVehicle, $this->someoneElseFleet)){
             throw new RuntimeException(sprintf('The vehicle with id %s is already part of the fleet with id %s (fleet owner : %s)',
                 $this->aVehicle->getId(), $this->someoneElseFleet->getId(), $this->someoneElseFleet->getUsername()));
         }
@@ -131,7 +131,7 @@ class FeatureContext implements Context
      * @Then I should be informed that this vehicle has already been registered into my fleet
      */
     public function checkIfAVehicleBelongsToMyFleet():void{
-        if(!$this->fleetManager->checkIfVehicleIsPartOfFleet($this->aVehicle, $this->myFleet)){
+        if(!$this->fleetHelper->checkIfVehicleIsPartOfFleet($this->aVehicle, $this->myFleet)){
             throw new \RuntimeException(sprintf('The vehicle with id %s should be part of the fleet with id %s
             (fleet owner : %s), but is not.',
                 $this->aVehicle->getId(),

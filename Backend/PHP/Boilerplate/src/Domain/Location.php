@@ -1,6 +1,6 @@
 <?php
 
-namespace Fulll\Domain;
+namespace App\Domain;
 
 class Location
 {

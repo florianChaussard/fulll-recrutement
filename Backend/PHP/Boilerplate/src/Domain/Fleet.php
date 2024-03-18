@@ -1,6 +1,6 @@
 <?php
 
-namespace Fulll\Domain;
+namespace App\Domain;
 
 Class Fleet{
     /** @var string an unique identifier for the fleet */
