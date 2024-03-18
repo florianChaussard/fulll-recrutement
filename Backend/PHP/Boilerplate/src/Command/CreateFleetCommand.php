@@ -43,6 +43,7 @@ class CreateFleetCommand extends Command
         //The text shown when running the command with --help flag
         $this->setHelp('This command allows you to create a fleet for the given user.');
         $this->addArgument('username', InputArgument::REQUIRED, 'Fleet owner\'s username');
+        $this->setDescription('Creates a new fleet for a user; displays fleet id');
     }
 
     /**
