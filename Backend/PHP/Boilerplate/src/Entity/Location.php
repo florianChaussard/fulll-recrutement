@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
+#[ORM\Table(name: 'Location')]
 class Location
 {
     #[ORM\Id]
@@ -24,6 +27,14 @@ class Location
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
+
+    #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'location')]
+    private Collection $lstVehicles;
+
+    public function __construct()
+    {
+        $this->lstVehicles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +80,36 @@ class Location
     public function setName(?string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vehicle>
+     */
+    public function getLstVehicles(): Collection
+    {
+        return $this->lstVehicles;
+    }
+
+    public function addLstVehicle(Vehicle $lstVehicle): static
+    {
+        if (!$this->lstVehicles->contains($lstVehicle)) {
+            $this->lstVehicles->add($lstVehicle);
+            $lstVehicle->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLstVehicle(Vehicle $lstVehicle): static
+    {
+        if ($this->lstVehicles->removeElement($lstVehicle)) {
+            // set the owning side to null (unless already changed)
+            if ($lstVehicle->getLocation() === $this) {
+                $lstVehicle->setLocation(null);
+            }
+        }
 
         return $this;
     }

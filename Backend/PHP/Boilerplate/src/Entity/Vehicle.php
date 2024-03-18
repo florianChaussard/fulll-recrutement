@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
+#[ORM\Table(name: 'Vehicle')]
 class Vehicle
 {
     #[ORM\Id]
@@ -23,6 +24,10 @@ class Vehicle
 
     #[ORM\ManyToMany(targetEntity: Fleet::class, inversedBy: 'lstVehicles')]
     private Collection $lstFleets;
+
+    #[ORM\ManyToOne(inversedBy: 'lstVehicles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $location = null;
 
     public function __construct()
     {
@@ -73,6 +78,18 @@ class Vehicle
     public function removeLstFleet(Fleet $lstFleet): static
     {
         $this->lstFleets->removeElement($lstFleet);
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }
