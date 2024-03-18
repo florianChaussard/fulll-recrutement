@@ -1,0 +1,7 @@
+doctrine:
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        auto_mapping: true
+    dbal:
+        default_connection: default
+        url: '%env(DATABASE_URL)%'
