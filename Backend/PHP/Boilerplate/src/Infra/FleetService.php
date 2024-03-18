@@ -1,16 +1,13 @@
 <?php
 namespace App\Infra;
 
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
-use App\Domain\Fleet;
+use App\Entity\Fleet;
 
 class FleetService
 {
-    private ManagerRegistry  $doctrine;
-    public function __construct(ManagerRegistry  $doctrine){
-        $this->doctrine = $doctrine;
-    }
+    public function __construct(private EntityManagerInterface  $em){}
 
     /**
      * Persists an instance of Fleet in the DB
@@ -18,8 +15,9 @@ class FleetService
      * @return string
      * @throws ORMException
      */
-    public function saveFleet(Fleet $fleet):string{
-        //$this->doctrine->->persist($fleet);
+    public function saveOneFleet(Fleet $fleet):string{
+        $this->em->persist($fleet);
+        $this->em->flush();
         return $fleet->getId();
     }
 }

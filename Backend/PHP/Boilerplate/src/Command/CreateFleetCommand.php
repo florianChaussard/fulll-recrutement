@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use Doctrine\ORM\Exception\ORMException;
-use App\Domain\Fleet;
+use App\Entity\Fleet;
 use App\Manager\FleetManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'app:create',
+    name: 'fleet:create',
     hidden: false,
 )]
 class CreateFleetCommand extends Command
@@ -59,9 +59,10 @@ class CreateFleetCommand extends Command
             '============',
         ]);
 
-        $fleet = new Fleet($username);
+        $fleet = new Fleet();
+        $fleet->setUsername($username);
         try {
-            $this->fleetManager->saveFleet($fleet);
+            $this->fleetManager->saveOneFleet($fleet);
         }
         catch(ORMException $e){
             $this->logger->error(sprintf('Failed to create a fleet by command. Error message : %s', $e->getMessage()));

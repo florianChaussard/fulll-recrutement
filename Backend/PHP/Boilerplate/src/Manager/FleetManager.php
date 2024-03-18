@@ -2,7 +2,7 @@
 namespace App\Manager;
 
 use Doctrine\ORM\Exception\ORMException;
-use App\Domain\Fleet;
+use App\Entity\Fleet;
 use App\Infra\FleetService;
 
 class FleetManager{
@@ -15,7 +15,7 @@ class FleetManager{
      * @return string
      * @throws ORMException
      */
-    public function saveFleet(Fleet $fleet):string{
-        return $this->fleetService->saveFleet($fleet);
+    public function saveOneFleet(Fleet $fleet):string{
+        return $this->fleetService->saveOneFleet($fleet);
     }
 }
