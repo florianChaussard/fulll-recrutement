@@ -6,8 +6,6 @@ I developped my answers to folders Algo and Backend using PHP 8.3. I wish i coul
 
 PHP libraries manager : Composer 
 
-JS libraries manager : Yarn
-
 # Installation
 * .env.local
 
@@ -15,7 +13,7 @@ The very first thing you need to do is to create a .env.local file at the root o
  
 * vendors
 
-For the project to run correctly after the first download, you need to run commands ``composer install`` in /Backend/PHP/Boilerplate dir and ``yarn install`` in Backend/Node/Boilerplate dir
+For the project to run correctly after the first download, you need to run commands ``composer install`` in /Backend/PHP/Boilerplate dir
 
 * database
 
