@@ -92,22 +92,22 @@ class Location
         return $this->lstVehicles;
     }
 
-    public function addLstVehicle(Vehicle $lstVehicle): static
+    public function addToLstVehicle(Vehicle $vehicle): static
     {
-        if (!$this->lstVehicles->contains($lstVehicle)) {
-            $this->lstVehicles->add($lstVehicle);
-            $lstVehicle->setLocation($this);
+        if (!$this->lstVehicles->contains($vehicle)) {
+            $this->lstVehicles->add($vehicle);
+            $vehicle->setLocation($this);
         }
 
         return $this;
     }
 
-    public function removeLstVehicle(Vehicle $lstVehicle): static
+    public function removeFromLstVehicle(Vehicle $vehicle): static
     {
-        if ($this->lstVehicles->removeElement($lstVehicle)) {
+        if ($this->lstVehicles->removeElement($vehicle)) {
             // set the owning side to null (unless already changed)
-            if ($lstVehicle->getLocation() === $this) {
-                $lstVehicle->setLocation(null);
+            if ($vehicle->getLocation() === $this) {
+                $vehicle->setLocation(null);
             }
         }
 
