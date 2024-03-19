@@ -97,7 +97,7 @@ class RegisterVehicleToFleetCommand extends Command
             return Command::FAILURE;
         }
 
-        $output->writeln('Registration successful : vehicle with plate number '.$plateNumber.' is part of '.$fleet->getUsername().'\'s fleet',);
+        $output->writeln('Registration successful : vehicle with plate number '.$plateNumber.' is part of '.$fleet->getUsername().'\'s fleet');
 
         return Command::SUCCESS;
     }

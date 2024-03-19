@@ -18,7 +18,8 @@
         "symfony/framework-bundle": "6.4.*",
         "symfony/monolog-bundle": "^3.10",
         "symfony/runtime": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "symfony/yaml": "6.4.*",
+        "squizlabs/php_codesniffer": "@stable"
     },
     "config": {
         "preferred-install": {

@@ -3,9 +3,7 @@
 namespace App\Command;
 
 use App\Manager\VehicleManager;
-use Doctrine\ORM\Exception\ORMException;
 use App\Manager\FleetManager;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,17 +24,12 @@ class LocalizeVehicleCommand extends Command
      * @var VehicleManager $vehicleManager
      */
     private VehicleManager $vehicleManager;
-    /**
-     * @var LoggerInterface $logger object used to write errors in var/log folder
-     */
-    private LoggerInterface $logger;
 
-    public function __construct(FleetManager $fleetManager, VehicleManager $vehicleManager, LoggerInterface $logger, ?string $name = null)
+    public function __construct(FleetManager $fleetManager, VehicleManager $vehicleManager, ?string $name = null)
     {
         parent::__construct($name);
         $this->fleetManager = $fleetManager;
         $this->vehicleManager = $vehicleManager;
-        $this->logger = $logger;
     }
 
     /**
