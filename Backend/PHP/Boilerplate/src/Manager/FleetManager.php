@@ -18,4 +18,14 @@ class FleetManager{
     public function saveOneFleet(Fleet $fleet):string{
         return $this->fleetService->saveOneFleet($fleet);
     }
+
+    /**
+     * Checks the DB for a fleet that has this id
+     * @param int $fleetId
+     * @return Fleet
+     * @throws \InvalidArgumentException
+     */
+    public function getOneById(int $fleetId):Fleet{
+        return $this->fleetService->getOneById($fleetId);
+    }
 }
