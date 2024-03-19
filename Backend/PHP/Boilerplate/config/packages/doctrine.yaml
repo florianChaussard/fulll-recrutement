@@ -1,0 +1,18 @@
+doctrine:
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+
+    dbal:
+        default_connection: default
+        driver: pdo_mysql
+        url: '%env(DATABASE_URL)%'
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
