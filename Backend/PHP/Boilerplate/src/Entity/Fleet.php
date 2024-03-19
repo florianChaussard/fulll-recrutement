@@ -62,20 +62,20 @@ class Fleet
         return $this->lstVehicles;
     }
 
-    public function addLstVehicle(Vehicle $lstVehicle): static
+    public function addToLstVehicle(Vehicle $vehicle): static
     {
-        if (!$this->lstVehicles->contains($lstVehicle)) {
-            $this->lstVehicles->add($lstVehicle);
-            $lstVehicle->addLstFleet($this);
+        if (!$this->lstVehicles->contains($vehicle)) {
+            $this->lstVehicles->add($vehicle);
+            $vehicle->addToLstFleet($this);
         }
 
         return $this;
     }
 
-    public function removeLstVehicle(Vehicle $lstVehicle): static
+    public function removeFromLstVehicle(Vehicle $vehicle): static
     {
-        if ($this->lstVehicles->removeElement($lstVehicle)) {
-            $lstVehicle->removeLstFleet($this);
+        if ($this->lstVehicles->removeElement($vehicle)) {
+            $vehicle->removeFromLstFleet($this);
         }
 
         return $this;

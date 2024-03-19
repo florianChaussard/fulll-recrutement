@@ -26,7 +26,7 @@ class Vehicle
     private Collection $lstFleets;
 
     #[ORM\ManyToOne(inversedBy: 'lstVehicles')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Location $location = null;
 
     public function __construct()
@@ -66,7 +66,7 @@ class Vehicle
         return $this->lstFleets;
     }
 
-    public function addLstFleet(Fleet $lstFleet): static
+    public function addToLstFleet(Fleet $lstFleet): static
     {
         if (!$this->lstFleets->contains($lstFleet)) {
             $this->lstFleets->add($lstFleet);
@@ -75,7 +75,7 @@ class Vehicle
         return $this;
     }
 
-    public function removeLstFleet(Fleet $lstFleet): static
+    public function removeFromLstFleet(Fleet $lstFleet): static
     {
         $this->lstFleets->removeElement($lstFleet);
 
